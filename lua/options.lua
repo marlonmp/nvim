@@ -14,6 +14,10 @@ vim.opt.ignorecase = true
 vim.opt.smartcase = true
 vim.opt.termguicolors = true
 
+-- undo tree
+vim.opt.undofile = true
+vim.opt.undodir = vim.fn.stdpath("cache") .. "/undo"
+
 -- language by language config
 local indent_group = vim.api.nvim_create_augroup("IndentSettings", { clear = true })
 
