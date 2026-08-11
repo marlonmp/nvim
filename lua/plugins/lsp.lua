@@ -15,41 +15,41 @@ return {
 
         -- FIX: Passing handlers directly into setup() instead of calling setup_handlers()
         require("mason-lspconfig").setup({
-        ensure_installed = {
-            "lua_ls",       -- Lua
-            "pyright",      -- Python
-            "gopls",        -- Go
-            "rust_analyzer",-- Rust
-            "ts_ls",        -- JavaScript / TypeScript
-            "html",         -- HTML
-            "cssls",        -- CSS
-            "jsonls",       -- JSON
-        },
-        handlers = {
-            -- The default handler automatically executes for all language servers listed above
-            function(server_name)
-            lspconfig[server_name].setup({
-                capabilities = capabilities
-            })
-            end,
-        }
+            ensure_installed = {
+                "lua_ls",
+                "pyright",
+                "gopls",
+                "rust_analyzer",
+                "ts_ls",
+                "html",
+                "cssls",
+                "jsonls",
+            },
+            handlers = {
+                -- The default handler automatically executes for all language servers listed above
+                function(server_name)
+                    lspconfig[server_name].setup({
+                        capabilities = capabilities
+                    })
+                end,
+            }
         })
 
         -- Core completion engine behavior and layout
         local cmp = require("cmp")
         cmp.setup({
-        snippet = {
-            expand = function(args) require("luasnip").lsp_expand(args.body) end
-        },
-        mapping = cmp.mapping.preset.insert({
-            ["<C-b>"] = cmp.mapping.scroll_docs(-4),
-            ["<C-f>"] = cmp.mapping.scroll_docs(4),
-            ["<C-Space>"] = cmp.mapping.complete(),
-            ["<CR>"] = cmp.mapping.confirm({ select = true }),
-        }),
-        sources = cmp.config.sources({
-            { name = "nvim_lsp" },
-        }),
+            snippet = {
+                expand = function(args) require("luasnip").lsp_expand(args.body) end
+            },
+            mapping = cmp.mapping.preset.insert({
+                ["<C-b>"] = cmp.mapping.scroll_docs(-4),
+                ["<C-f>"] = cmp.mapping.scroll_docs(4),
+                ["<C-Space>"] = cmp.mapping.complete(),
+                ["<CR>"] = cmp.mapping.confirm({ select = true }),
+            }),
+            sources = cmp.config.sources({
+                { name = "nvim_lsp" },
+            }),
         })
 
         -- Global keymaps for interacting with language features
@@ -58,5 +58,18 @@ return {
         vim.keymap.set("n", "gr", vim.lsp.buf.references, { desc = "Go to references" })
         vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code actions" })
         vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { desc = "Rename symbol" })
+        vim.keymap.set('n', '<leader>ft', vim.lsp.buf.format, { desc = 'Format code' })
+        vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { desc = "LSP Rename" })
+
+        vim.diagnostic.config({
+            -- Only display errors and warnings for virtual text
+            virtual_text = {
+                severity = { min = vim.diagnostic.severity.WARN }
+            },
+            -- Only display errors and warnings for underlines
+            underline = {
+                severity = { min = vim.diagnostic.severity.WARN }
+            },
+        })
     end,
 }
