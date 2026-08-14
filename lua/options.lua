@@ -13,6 +13,7 @@ vim.opt.wrap = false
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 vim.opt.termguicolors = true
+vim.opt.scrolloff = 8
 
 -- enable whitespace rendering
 vim.opt.list = true
